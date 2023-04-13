@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">ShoeStore</string>
+
+    <string name="logout">Logout</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="don_t_have_an_account">Don\'t have an account ?</string>
+    <string name="sign_up">Sign up</string>
+    <string name="welcome">Welcome!</string>
+    <string name="access_shoe_store">Access Shoe Store</string>
+    <string name="next_page">Continue</string>
+    <string name="welcome_message">Welcome \nTo your loving Shoe Store</string>
+    <string name="instruction_text_one">Check which shoe do i have in the store</string>
+    <string name="instruction_text_two">Add new shoe to the store</string>
+    <string name="title_activity_main2">MainActivity2</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="description">Description</string>
+    <string name="shoe_size">Shoe Size</string>
+    <string name="company">Company</string>
+    <string name="shoe_name">Shoe Name</string>
+    <string name="ui_login">Login</string>
+    <string name="ui_instruction">Instruction</string>
+    <string name="ui_shoe_list">Shoe List</string>
+    <string name="ui_add_new_shoe">Add New Shoe</string>
+    <string name="shoe_added_success_message">You\'ve successfully added a new Shoe to the Store.</string>
+    <string name="empty_shoe_store">Empty Shoe Store</string>
+    <string name="empty_form_validation_error">The input fields are required</string>
+
+    <string name="name_label">Name   : %s</string>
+    <string name="company_label">Company : %s</string>
+    <string name="size_label">Size   : %s</string>
+    <string name="email_required">Email is required</string>
+    <string name="email_invalid">Email is invalid</string>
+    <string name="password_required">Password is required</string>
+    <string name="password_length_error">At least 6 characters for the password</string>
+    <string name="shoe_already_exist">The entered shoe is already exist in the store</string>
+</resources>
