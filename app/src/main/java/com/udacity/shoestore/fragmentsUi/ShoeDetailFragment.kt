@@ -37,7 +37,10 @@ class ShoeDetailFragment : Fragment() {
 
     private fun listenToViewModelEvents() {
         shoeViewModel.isShoeAlreadyExist.observe(viewLifecycleOwner) { state ->
-            if (state) getSnackBar(getString(R.string.shoe_already_exist)).show()
+            if (state) {
+                getSnackBar(getString(R.string.shoe_already_exist)).show()
+                shoeViewModel.resetIsNewShoeAddedState()
+            }
         }
         viewLifecycleOwner.lifecycleScope.launch {
             launch {
