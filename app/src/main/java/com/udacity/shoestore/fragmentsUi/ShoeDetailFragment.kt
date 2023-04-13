@@ -24,7 +24,7 @@ class ShoeDetailFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_shoe_detail, container, false)
         binding.shoeViewModel = shoeViewModel
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
         listenToViewModelEvents()
         listenToClickEvents()
         shoeViewModel.resetIsNewShoeAddedState()
@@ -69,5 +69,5 @@ class ShoeDetailFragment : Fragment() {
         }.show()
     }
 
-    private fun getSnackBar(message: String) = Snackbar.make(binding.containerCl, message, Snackbar.LENGTH_LONG)
+    private fun getSnackBar(message: String) = Snackbar.make(requireView(), message, Snackbar.LENGTH_LONG)
 }
