@@ -16,8 +16,9 @@ class MainViewModel : ViewModel() {
     private var _isNewShoeAdded = MutableStateFlow(false)
     val isNewShoeAdded = _isNewShoeAdded.asStateFlow()
 
-    private var _isShoeAlreadyExist = MutableStateFlow(false)
-    val isShoeAlreadyExist = _isShoeAlreadyExist.asStateFlow()
+    private var _isShoeAlreadyExist = MutableLiveData(false)
+    val isShoeAlreadyExist: LiveData<Boolean>
+        get() = _isShoeAlreadyExist
 
     private val defaultShoeObject = Shoe("", 0.0, "", "")
     private val _shoe = MutableLiveData(defaultShoeObject)
@@ -32,8 +33,9 @@ class MainViewModel : ViewModel() {
     fun onSavedClicked(shoeModel: Shoe) {
         if (shoeModel.name.isBlank() && shoeModel.company.isBlank() && shoeModel.size <= 0.0 && shoeModel.description.isBlank()) {
             _isEmptyInputFieldFound.value = true
-        } else if (_shoeList.value.contains(shoeModel)) {
+        } else if (_shoeList.value.find { shoe -> shoe.name == shoeModel.name && shoe.size == shoeModel.size } != null) {
             _isShoeAlreadyExist.value = true
+            _isNewShoeAdded.value = false
         } else {
             _isEmptyInputFieldFound.value = false
             _isShoeAlreadyExist.value = false
