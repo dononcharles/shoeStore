@@ -13,16 +13,15 @@ import kotlinx.coroutines.flow.asStateFlow
  */
 class MainViewModel : ViewModel() {
 
-    private var _isNewShoeAdded = MutableStateFlow(false)
-    val isNewShoeAdded = _isNewShoeAdded.asStateFlow()
+    private var _isNewShoeAdded = MutableLiveData(false)
+    val isNewShoeAdded: LiveData<Boolean>
+        get() = _isNewShoeAdded
 
     private var _isShoeAlreadyExist = MutableLiveData(false)
     val isShoeAlreadyExist: LiveData<Boolean>
         get() = _isShoeAlreadyExist
 
-    private val defaultShoeObject = Shoe("", 0.0, "", "")
-    private val _shoe = MutableLiveData(defaultShoeObject)
-    val shoe: LiveData<Shoe> get() = _shoe
+    var shoe: MutableLiveData<Shoe> = MutableLiveData<Shoe>(Shoe("", 0.0, "", "", mutableListOf()))
 
     private val _shoeList = MutableStateFlow(Shoe.defaultShoeList)
     val shoeList = _shoeList.asStateFlow()
@@ -35,10 +34,7 @@ class MainViewModel : ViewModel() {
             _isEmptyInputFieldFound.value = true
         } else if (_shoeList.value.find { shoe -> shoe.name == shoeModel.name && shoe.size == shoeModel.size } != null) {
             _isShoeAlreadyExist.value = true
-            _isNewShoeAdded.value = false
         } else {
-            _isEmptyInputFieldFound.value = false
-            _isShoeAlreadyExist.value = false
             _shoeList.value.add(shoeModel)
             _isNewShoeAdded.value = true
         }
@@ -47,7 +43,8 @@ class MainViewModel : ViewModel() {
     fun resetIsNewShoeAddedState() {
         _isNewShoeAdded.value = false
         _isShoeAlreadyExist.value = false
-        _shoe.postValue(defaultShoeObject)
+        shoe.value = Shoe("", 0.0, "", "", mutableListOf())
+        _isEmptyInputFieldFound.value = false
     }
 
     fun resetIsEmptyInputFieldFound() {

@@ -42,21 +42,15 @@ class ShoeDetailFragment : Fragment() {
                 shoeViewModel.resetIsNewShoeAddedState()
             }
         }
+        shoeViewModel.isNewShoeAdded.observe(viewLifecycleOwner) { state ->
+            if (state) showSnackBar()
+        }
         viewLifecycleOwner.lifecycleScope.launch {
             launch {
                 shoeViewModel.isEmptyInputFieldFound.collectLatest { state ->
                     if (state) {
                         getSnackBar(getString(R.string.empty_form_validation_error)).show()
                         shoeViewModel.resetIsEmptyInputFieldFound()
-                    }
-                }
-            }
-
-            launch {
-                shoeViewModel.isNewShoeAdded.collectLatest { state ->
-                    if (state) {
-                        binding.saveBtn.isEnabled = false
-                        showSnackBar()
                     }
                 }
             }
@@ -71,7 +65,6 @@ class ShoeDetailFragment : Fragment() {
 
     private fun showSnackBar() {
         Snackbar.make(requireView(), getString(R.string.shoe_added_success_message), Snackbar.LENGTH_INDEFINITE).setAction(android.R.string.ok) {
-            binding.saveBtn.isEnabled = true
             shoeViewModel.resetIsNewShoeAddedState()
             requireView().findNavController().navigate(ShoeDetailFragmentDirections.actionShoeDetailFragmentToShoeListFragment())
         }.show()
