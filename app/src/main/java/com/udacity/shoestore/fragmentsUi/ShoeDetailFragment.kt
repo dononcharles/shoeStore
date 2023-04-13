@@ -25,13 +25,23 @@ class ShoeDetailFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_shoe_detail, container, false)
         binding.shoeViewModel = shoeViewModel
         binding.lifecycleOwner = viewLifecycleOwner
-        listenToViewModelEvents()
-        listenToClickEvents()
-        shoeViewModel.resetIsNewShoeAddedState()
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        listenToViewModelEvents()
+        listenToClickEvents()
+        shoeViewModel.resetIsNewShoeAddedState()
+    }
+
     private fun listenToViewModelEvents() {
+        shoeViewModel.isShoeAlreadyExist.observe(viewLifecycleOwner) { state ->
+            if (state) {
+                getSnackBar(getString(R.string.shoe_already_exist)).show()
+                shoeViewModel.resetIsNewShoeAddedState()
+            }
+        }
         viewLifecycleOwner.lifecycleScope.launch {
             launch {
                 shoeViewModel.isEmptyInputFieldFound.collectLatest { state ->
@@ -44,13 +54,10 @@ class ShoeDetailFragment : Fragment() {
 
             launch {
                 shoeViewModel.isNewShoeAdded.collectLatest { state ->
-                    if (state) showSnackBar()
-                }
-            }
-
-            launch {
-                shoeViewModel.isShoeAlreadyExist.collectLatest { state ->
-                    if (state) getSnackBar(getString(R.string.shoe_already_exist))
+                    if (state) {
+                        binding.saveBtn.isEnabled = false
+                        showSnackBar()
+                    }
                 }
             }
         }
@@ -63,7 +70,8 @@ class ShoeDetailFragment : Fragment() {
     }
 
     private fun showSnackBar() {
-        getSnackBar(getString(R.string.shoe_added_success_message)).setAction(android.R.string.ok) {
+        Snackbar.make(requireView(), getString(R.string.shoe_added_success_message), Snackbar.LENGTH_INDEFINITE).setAction(android.R.string.ok) {
+            binding.saveBtn.isEnabled = true
             shoeViewModel.resetIsNewShoeAddedState()
             requireView().findNavController().navigate(ShoeDetailFragmentDirections.actionShoeDetailFragmentToShoeListFragment())
         }.show()
